@@ -1,25 +1,75 @@
-import logo from './logo.svg';
+import React from 'react'
+import { Provider } from 'react-redux'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import 'antd/dist/antd.css'
 import './App.css';
+import ContantContainer from './Component/ContentContainer'
+import NewUserModal from './Component/NewUserModal'
 
-function App() {
+
+
+import { Layout, Menu, Input } from 'antd';
+import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+
+const { Header, Content, Footer, Sider } = Layout
+const { Search } = Input;
+
+const onSearch = (value) => console.log(value);
+
+const App = ({ store }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Provider store={store}>
+      <Layout>
+        <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          onBreakpoint={broken => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <div className="logo" />
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+            <Search placeholder="input search text" onSearch={onSearch} enterButton />
+            <NewUserModal />
+            <Menu.Item key="1" icon={<UserOutlined />}>
+              nav 1
+          </Menu.Item>
+            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+              nav 2
+          </Menu.Item>
+            <Menu.Item key="3" icon={<UploadOutlined />}>
+              nav 3
+          </Menu.Item>
+            <Menu.Item key="4" icon={<UserOutlined />}>
+              nav 4
+          </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
+          <Content style={{ margin: '24px 16px 0' }}>
+            <div className="site-layout-background" style={{ padding: 24, minHeight: window.innerHeight }}>
+              <ContantContainer />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>footer</Footer>
+        </Layout>
+      </Layout>
+    </Provider>
+  )
 }
 
-export default App;
+
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+export default compose(
+  connect(mapStateToProps, {})
+)(App)
+
+// export default App;
