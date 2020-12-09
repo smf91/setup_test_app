@@ -1,11 +1,21 @@
 import React from 'react'
 import { Card, Col, Row } from 'antd';
-// import usersReducer from '../Redux/users-reducer';
 import {compose} from 'redux'
 import {connect} from 'react-redux'
+import {
+    EditOutlined,
+    DeleteOutlined
+    } from '@ant-design/icons';
+
+import {deleteUser, editUser} from '../Redux/users-reducer'
 
 
 const ContantContainer = (props) => {
+
+    const deleteUsers=()=>{
+        props.deleteUser("345453")
+    }
+
     if (props.users.length === 0) {
         return <div> нет юзеров </div>
     } else {
@@ -13,8 +23,8 @@ const ContantContainer = (props) => {
             <Row gutter={16}>
                 {
                     props.users.map((user) =>
-                        <Col span={8} key={user.id}>
-                            <Card title={user.name} bordered={false}>
+                        <Col span={8} key={user.id} id={user.id}>
+                            <Card title={user.name} extra={[<EditOutlined  onClick ={()=>{props.editUser(user.id)}} />,  <DeleteOutlined onClick ={()=>{props.deleteUser(user.id)}}/>]} bordered={false} >
                                 <ul>
                                     <li>{user.email}</li>
                                     <li>{user.phone}</li>
@@ -40,5 +50,5 @@ const mapStateToProps = (state) => {
     }
 }
 export default compose(
-    connect(mapStateToProps, {})
+    connect(mapStateToProps, {deleteUser, editUser})
 )(ContantContainer)

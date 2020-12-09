@@ -1,5 +1,5 @@
 import React  from 'react'
-import {CreateUser} from '../Redux/users-reducer'
+import {createUserThunk} from '../Redux/users-reducer'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
 
@@ -73,7 +73,7 @@ const NewUserFormComponent = (props) => {
                 creationDate: "12.31.443",
                 lastModifideDate: '234.243.523'
         }
-        props.CreateUser(user)
+        props.createUserThunk(user)
 
 
     }
@@ -223,5 +223,5 @@ const mapStateToProps = (state) => {
 }
 
 export default compose(
-    connect(mapStateToProps, {CreateUser})
+    connect(mapStateToProps, {createUserThunk})
 )(NewUserFormComponent)
