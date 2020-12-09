@@ -59,10 +59,22 @@ const tailFormItemLayout = {
     },
 }
 
-const NewUserFormComponent = () => {
+const NewUserFormComponent = (props) => {
     const [form] = Form.useForm()
     const onFinish = (values) => {
         console.log('hello');
+        let user ={
+                name: 'Alesssxey1222',
+                id: '345453',
+                status: 'admin',
+                phone: '85432543544',
+                email: 'mail233@mail.ru',
+                password: 'ffferr4',
+                creationDate: "12.31.443",
+                lastModifideDate: '234.243.523'
+        }
+        props.CreateUser(user)
+
 
     }
     const prefixSelector = (
