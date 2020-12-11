@@ -1,8 +1,10 @@
-// import { save, load } from "redux-localstorage-simple"
+import { userCreater, userEditor } from '../Utils/userConstructor'
 
 const CREATE_USER = "CREATE_USER"
 const DELETE_USER = "DELETE_USER"
 const EDIT_USER = "EDIT_USER"
+const SELECT_MUTABLE_USER = "SELECT_MUTABLE_USER"
+const DELETE_MUTABLE_USER = "DELETE_MUTABLE_USER"
 
 let initialState = {
     users: [
@@ -36,7 +38,8 @@ let initialState = {
         //     creationDate: "12.31.443",
         //     lastModifideDate: '234.243.523'
         // }
-    ]
+    ],
+    mutableUser: null
 }
 
 const usersReducer = (state = initialState, action) => {
@@ -47,9 +50,27 @@ const usersReducer = (state = initialState, action) => {
                 users: [action.newUser, ...state.users]
             }
         case DELETE_USER:
-            return{
+            return {
                 ...state,
-                users : state.users.filter(user=> user.id !== action.userId)
+                users: state.users.filter(user => user.id !== action.userId)
+            }
+        case EDIT_USER:
+            const index = state.users.findIndex(user => user.id === action.user.id)
+            const newArr = [...state.users]
+            newArr[index] = action.user
+            return {
+                ...state,
+                users: newArr
+            }
+        case SELECT_MUTABLE_USER:
+            return {
+                ...state,
+                mutableUser: state.users.filter(user => user.id === action.userId)[0]
+            }
+        case DELETE_MUTABLE_USER:
+            return {
+                ...state,
+                mutableUser: null
             }
         default:
             return state
@@ -59,14 +80,26 @@ const usersReducer = (state = initialState, action) => {
 export const createUser = (newUser) => ({ type: CREATE_USER, newUser })
 export const editUser = (user) => ({ type: EDIT_USER, user })
 export const deleteUser = (userId) => ({ type: DELETE_USER, userId })
+export const selectMutableUser = (userId) => ({ type: SELECT_MUTABLE_USER, userId })
+export const deleteMutableUser = () => ({ type: DELETE_MUTABLE_USER })
 
 //Thunk
 
-export const createUserThunk = (user) => {
-    return async (dispatch) => {
-        dispatch(createUser(user))
+export const createUserThunk = (userData) => {
+    return (dispatch) => {
+        let data = userCreater(userData)
+        dispatch(createUser(data))
+    }
+}
 
+export const editUserThunk = (newUserData, mutableUser) => {
+    // debugger
+    return (dispatch) => {
+        let data = userEditor(newUserData, mutableUser)
+        dispatch(editUser(data))
+        dispatch(deleteMutableUser())
     }
 }
 
 export default usersReducer
+

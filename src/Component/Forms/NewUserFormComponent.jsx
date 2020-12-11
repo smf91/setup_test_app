@@ -1,33 +1,18 @@
 import React  from 'react'
-import {createUserThunk} from '../Redux/users-reducer'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
+import {createUserThunk} from '../../Redux/users-reducer'
+import {toggleShowModalWindow} from '../../Redux/app-reducer'
 
 import {
     Form,
     Input,
-    Cascader,
+    Radio,
     Select,
     Button,
-    // AutoComplete,
 } from 'antd';
 
 const { Option } = Select;
-// const AutoCompleteOption = AutoComplete.Option;
-const residences = [
-    {
-        value: 'admin',
-        label: 'Admin',
-    },
-    {
-        value: 'client',
-        label: 'Client',
-    },
-    {
-        value: 'partner',
-        label: 'Partner',
-    }
-]
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -62,20 +47,8 @@ const tailFormItemLayout = {
 const NewUserFormComponent = (props) => {
     const [form] = Form.useForm()
     const onFinish = (values) => {
-        console.log('hello');
-        let user ={
-                name: 'Alesssxey1222',
-                id: '345453',
-                status: 'admin',
-                phone: '85432543544',
-                email: 'mail233@mail.ru',
-                password: 'ffferr4',
-                creationDate: "12.31.443",
-                lastModifideDate: '234.243.523'
-        }
-        props.createUserThunk(user)
-
-
+        props.createUserThunk(values)
+        props.toggleShowModalWindow()
     }
     const prefixSelector = (
         <Form.Item name="prefix" noStyle>
@@ -84,17 +57,7 @@ const NewUserFormComponent = (props) => {
                 <Option value="7">+7</Option>
             </Select>
         </Form.Item>
-    );
-    // const [autoCompleteResult, setAutoCompleteResult] = useState([])
-
-    // const onWebsiteChange = (value) => {
-    //     if (!value) {
-    //         setAutoCompleteResult([])
-    //     } else {
-    //         setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-    //         setAutoCompleteResult([])
-    //     }
-    // }
+    )
     return (
         <Form
             {...formItemLayout}
@@ -102,7 +65,6 @@ const NewUserFormComponent = (props) => {
             name="register"
             onFinish={onFinish}
             initialValues={{
-                residence: ['admin', 'user', 'partner'],
                 prefix: '7',
             }}
             scrollToFirstError
@@ -133,7 +95,7 @@ const NewUserFormComponent = (props) => {
                         message: 'The input is not valid E-mail!',
                     },
                     {
-                        required: true,
+                        required: false,
                         message: 'Please input your E-mail!',
                     },
                 ]}
@@ -145,7 +107,7 @@ const NewUserFormComponent = (props) => {
                 label="Password"
                 rules={[
                     {
-                        required: true,
+                        required: false,
                         message: 'Please input your password!',
                     },
                 ]}
@@ -175,18 +137,12 @@ const NewUserFormComponent = (props) => {
             >
                 <Input.Password />
             </Form.Item>
-            <Form.Item
-                name="status"
-                label="Status"
-                rules={[
-                    {
-                        type: 'array',
-                        required: true,
-                        message: 'Please select your status user!',
-                    },
-                ]}
-            >
-                <Cascader options={residences} />
+            <Form.Item name="status" label="Status">
+                <Radio.Group >
+                    <Radio.Button value="admin">Admin</Radio.Button>
+                    <Radio.Button value="user">User</Radio.Button>
+                    <Radio.Button value="partner">Partner</Radio.Button>
+                </Radio.Group>
             </Form.Item>
             <Form.Item
                 name="phone"
@@ -214,14 +170,13 @@ const NewUserFormComponent = (props) => {
     )
 }
 
-
-
-
 const mapStateToProps = (state) => {
     return {
     }
 }
 
 export default compose(
-    connect(mapStateToProps, {createUserThunk})
+    connect(mapStateToProps, {createUserThunk,
+                                toggleShowModalWindow
+    })
 )(NewUserFormComponent)
