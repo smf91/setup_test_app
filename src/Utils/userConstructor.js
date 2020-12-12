@@ -10,13 +10,11 @@ export const userCreater = (userData) => {
         creationDate: date,
         lastModifideDate: date
     }
-    // debugger
     return newUsers
 }
 
 export const userEditor = (newUserData, mutableUser) => {
     let date = new Date().toISOString().slice(0,10)
-    // debugger
     let newUsers = {
         name: newUserData.name,
         id: mutableUser.id,
@@ -27,6 +25,5 @@ export const userEditor = (newUserData, mutableUser) => {
         creationDate: mutableUser.creationDate,
         lastModifideDate: date
     }
-    // debugger
     return newUsers
 }

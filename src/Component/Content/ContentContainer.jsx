@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, Col, Row } from 'antd'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -6,31 +6,23 @@ import {
     EditOutlined,
     DeleteOutlined
 } from '@ant-design/icons'
-import { deleteUser, editUser, selectMutableUser } from '../../Redux/users-reducer'
+import { deleteUser, selectMutableUser } from '../../Redux/users-reducer'
 import ModalWindowComponent from './ModalWindowComponent'
-import EditUserFormComponent from '../Forms/EditUserFormComponent'
 import { toggleShowModalWindow } from '../../Redux/app-reducer'
 
 
 const ContantContainer = (props) => {
-    const [isModalVisible, setIsModalVisible] = useState(false)
     const showModal = (userID) => {
-        props.toggleShowModalWindow()
         props.selectMutableUser(userID)
+        props.toggleShowModalWindow()
     }
-    // const handleOk = () => {
-    //     setIsModalVisible(false)
-    // }
-    // const handleCancel = () => {
-    //     setIsModalVisible(false)
-    // }
 
     if (props.users.length === 0) {
         return <>
             <div>fdsdfgfd</div>
             <ModalWindowComponent />
         </>
-    } else {
+    } else if (props.isModalVisible === false && props.users.length !== 0) {
 
             let arr =[]
             if (props.filters.statusFilter === ''){
@@ -53,19 +45,19 @@ const ContantContainer = (props) => {
                 <Row gutter={16}>
                     {
                         arr.map((user) =>
-                            <Col span={8} key={user.id} id={user.id}>
+                            <Col className='card' span={8} key={user.id} id={user.id}>
                                 <Card title={user.name}
                                     extra={[<EditOutlined onClick={() => { showModal(user.id) }} />,
                                     <DeleteOutlined onClick={() => { props.deleteUser(user.id) }} />]}
                                     bordered={false}
                                 >
                                     <ul>
-                                        <li>{user.email}</li>
-                                        <li>{user.phone}</li>
-                                        <li>{user.status}</li>
-                                        <li>{user.password}</li>
-                                        <li>{user.creationDate}</li>
-                                        <li>{user.lastModifideDate}</li>
+                                        <li>email: {user.email}</li>
+                                        <li>phone: {user.phone}</li>
+                                        <li>status{user.status}</li>
+                                        <li>password: {user.password}</li>
+                                        <li>Creation date: {user.creationDate}</li>
+                                        <li>Last modifide: {user.lastModifideDate}</li>
                                     </ul>
                                 </Card>
                             </Col>
@@ -73,22 +65,24 @@ const ContantContainer = (props) => {
                     }
                 </Row>
             </div>
-            <ModalWindowComponent />
+            
         </>
+    } else {
+        return <ModalWindowComponent />
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         users: state.users.users,
-        filters: state.app.filters
+        filters: state.app.filters,
+        isModalVisible: state.app.showModalWindow
     }
 }
 
 export default compose(
     connect(mapStateToProps, {
         deleteUser,
-        editUser,
         selectMutableUser,
         toggleShowModalWindow
     })

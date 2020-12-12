@@ -7,38 +7,7 @@ const SELECT_MUTABLE_USER = "SELECT_MUTABLE_USER"
 const DELETE_MUTABLE_USER = "DELETE_MUTABLE_USER"
 
 let initialState = {
-    users: [
-        // {
-        //     name: 'Alexey',
-        //     id: '234546576',
-        //     status: 'admin',
-        //     phone: '85432543544',
-        //     email: 'mail233@mail.ru',
-        //     password: 'ffferr4',
-        //     creationDate: "12.31.443",
-        //     lastModifideDate: '234.243.523'
-        // },
-        // {
-        //     name: 'Alexey',
-        //     id: '234546576',
-        //     status: 'admin',
-        //     phone: '85432543544',
-        //     email: 'mail233@mail.ru',
-        //     password: 'ffferr4',
-        //     creationDate: "12.31.443",
-        //     lastModifideDate: '234.243.523'
-        // },
-        // {
-        //     name: 'Alexey',
-        //     id: '234546576',
-        //     status: 'admin',
-        //     phone: '85432543544',
-        //     email: 'mail233@mail.ru',
-        //     password: 'ffferr4',
-        //     creationDate: "12.31.443",
-        //     lastModifideDate: '234.243.523'
-        // }
-    ],
+    users: [],
     mutableUser: null
 }
 
@@ -93,10 +62,15 @@ export const createUserThunk = (userData) => {
 }
 
 export const editUserThunk = (newUserData, mutableUser) => {
-    // debugger
     return (dispatch) => {
         let data = userEditor(newUserData, mutableUser)
         dispatch(editUser(data))
+        dispatch(deleteMutableUser())
+    }
+}
+
+export const deleteMutableUserThunk = () => {
+    return (dispatch) => {
         dispatch(deleteMutableUser())
     }
 }

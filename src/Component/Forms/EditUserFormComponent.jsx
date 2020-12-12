@@ -177,9 +177,6 @@ const EditUserFormComponent = (props) => {
     )
 }
 
-
-
-
 const mapStateToProps = (state) => {
     return {
         mutableUser : state.users.mutableUser

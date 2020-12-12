@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { toggleShowModalWindow, setFilterValue} from '../../Redux/app-reducer'
 
 const { Sider } = Layout
-const { Search } = Input
 
 const SiderComponent = (props) => {
     const radioStyle = {
@@ -19,23 +18,23 @@ const SiderComponent = (props) => {
         props.toggleShowModalWindow()
     }
     const setFilterValue= (e) => {
-        console.log('radio checked', 'value - ' + e.target.value)
-        console.log('radio checked', 'name - ' + e.target.name)
+        // 
         props.setFilterValue(e.target.name, e.target.value)
     }
     return <>
         <Sider
             breakpoint="lg"
             collapsedWidth="0"
-            onBreakpoint={broken => {
-                console.log(broken)
-            }}
-            onCollapse={(collapsed, type) => {
-                console.log(collapsed, type)
-            }}
+            
+            // onBreakpoint={broken => {
+            //     console.log(broken)
+            // }}
+            // onCollapse={(collapsed, type) => {
+            //     console.log(collapsed, type)
+            // }}
         >
             <div className="logo" />
-            <Row gutter={[16, 16]} align={"center"}>
+            <Row gutter={[16, 16]} align={"center"} >
                 <Col span={12} >
                     <Button type="primary" onClick={toogle}>Add user</Button>
                 </Col>
@@ -63,7 +62,7 @@ const SiderComponent = (props) => {
                             Partner
                         </Radio>
                         <Radio style={radioStyle} value= ''>
-                            Anyone...
+                            All...
                         </Radio>
                     </Radio.Group>
                 </Col>
